@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SketchUp Hindi - Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="./assets/images/logo.jpg" type="image/x-icon">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#0f172a',
+                            text: '#e2e8f0',
+                            nav: '#1f2937',
+                            content: '#1f2937',
+                        },
+                        light: {
+                            bg: '#f1f5f9',
+                            text: '#1f2937',
+                            nav: '#ffffff',
+                            content: '#ffffff',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .dark .text-shadow { text-shadow: 2px 2px 4px rgba(255,255,255,0.1); }
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            padding-bottom: 75%; /* 4:3 aspect ratio */
+        }
+        .gallery-item-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        .gallery-item img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .gallery-item-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .gallery-item:hover .gallery-item-info {
+            transform: translateY(0);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+        }
+        .modal-content {
+            margin: auto;
+            display: flex;
+            width: 80%;
+            max-width: 700px;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="min-h-screen dark:bg-dark-bg dark:text-dark-text bg-light-bg text-light-text transition-colors duration-300">
+    <nav class="dark:bg-dark-nav bg-light-nav shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0 flex items-center">
+                        <img src="assets/images/logo.jpg" alt="SketchUp Hindi Logo" class="h-8 w-8 mr-2">
+                        <span class="font-bold text-xl">SketchUp Hindi</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="/" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
+                    <a href="https://www.youtube.com/@SketchupHindi" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">YouTube Channel</a>
+                    <a href="/gallery.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Gallery</a>
+                    <a href="/about.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">About Us</a>
+                    <a href="/contact.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Contact</a>
+                </div>
+                <div class="flex items-center">
+                    <div class="relative hidden md:block">
+                        <input type="text" id="search-input" placeholder="Search..." class="w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <button id="themeToggle" class="ml-4 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <button id="mobile-menu-button" class="md:hidden ml-2 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="/" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
+                <a href="https://www.youtube.com/@SketchupHindi" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">YouTube Channel</a>
+                <a href="/gallery.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Gallery</a>
+                <a href="/about.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">About Us</a>
+                <a href="/contact.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Contact</a>
+            </div>
+            <div class="px-2 pt-2 pb-3">
+                <input type="text" id="mobile-search-input" placeholder="Search..." class="w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Gallery Header -->
+    <header class="bg-gradient-to-r from-blue-500 to-teal-500 dark:from-blue-800 dark:to-teal-800 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-4xl font-bold text-white text-center">SketchUp Hindi Gallery</h1>
+        </div>
+    </header>
+
+    <!-- Gallery Grid -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Gallery items will be dynamically inserted here -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-between">
+                <div class="w-full md:w-1/3 mb-6 md:mb-0">
+                    <h3 class="text-xl font-semibold mb-2">About SketchUp Hindi</h3>
+                    <p class="text-gray-400">We provide high-quality SketchUp tutorials in Hindi, helping you master 3D modeling and design.</p>
+                </div>
+                <div class="w-full md:w-1/3 mb-6 md:mb-0">
+                    <h3 class="text-xl font-semibold mb-2">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="text-gray-400 hover:text-white transition-colors duration-300">Home</a></li>
+                        <li><a href="/about.html" class="text-gray-400 hover:text-white transition-colors duration-300">About Us</a></li>
+                        <li><a href="/contact.html" class="text-gray-400 hover:text-white transition-colors duration-300">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="w-full md:w-1/3">
+                    <h3 class="text-xl font-semibold mb-2">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://www.youtube.com/@SketchupHindi" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fab fa-youtube fa-2x"></i></a>
+                        <a href="https://www.facebook.com/sketchup.hindi/" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fab fa-facebook fa-2x"></i></a>
+                        <a href="https://www.instagram.com/sketchuphindi/?hl=en" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fab fa-instagram fa-2x"></i></a>
+                        <a href="https://chat.whatsapp.com/FC5tzsZWv5sIHEzl6D4sek" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fab fa-whatsapp fa-2x"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
+                <p>&copy; 2024 SketchUp Hindi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loader -->
+    <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-75 dark:bg-opacity-75">
+        <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+    apiKey: "AIzaSyCNVpQzPRLol49QdenJEjcAqRwyxIlQk8s",
+    authDomain: "hindi-f05ab.firebaseapp.com",
+    projectId: "hindi-f05ab",
+    storageBucket: "hindi-f05ab.appspot.com",
+    messagingSenderId: "796177404338",
+    appId: "1:796177404338:web:6349e9c010edc8bf2d54ab"
+  };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Show loader
+        function showLoader() {
+            document.getElementById('loader').classList.remove('hidden');
+        }
+
+        // Hide loader
+        function hideLoader() {
+            document.getElementById('loader').classList.add('hidden');
+        }
+
+        // Function to create a gallery item
+        function createGalleryItem(image) {
+            const truncateText = (text, maxLength) => {
+                return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+            };
+
+            return `
+                <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <div class="h-48 overflow-hidden cursor-pointer" onclick="openModal('${image.url}')">
+                        <img src="${image.url}" alt="${image.title}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-2 h-14 overflow-hidden">${truncateText(image.title, 50)}</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-300 mb-4 h-12 overflow-hidden">${truncateText(image.description, 75)}</p>
+                        <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                            <span><i class="far fa-calendar-alt mr-1"></i>${image.date}</span>
+                            <span><i class="far fa-clock mr-1"></i>${image.time}</span>
+                        </div>
+                        <span class="inline-block bg-blue-500 text-white text-xs px-2 py-1 rounded mt-2">${image.label}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Fetch and render gallery items
+        function fetchAndRenderGalleryItems() {
+            showLoader();
+            const galleryRef = ref(db, 'gallery');
+            onValue(galleryRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const galleryGrid = document.getElementById('gallery-grid');
+                    const galleryItems = Object.values(data);
+                    galleryGrid.innerHTML = galleryItems.map(item => createGalleryItem(item)).join('');
+                }
+                hideLoader();
+            });
+        }
+
+        // Search gallery items
+        function searchGalleryItems(query) {
+            showLoader();
+            const galleryRef = ref(db, 'gallery');
+            onValue(galleryRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const filteredItems = Object.values(data).filter(item => 
+                        item.title.toLowerCase().includes(query.toLowerCase()) ||
+                        item.description.toLowerCase().includes(query.toLowerCase()) ||
+                        item.label.toLowerCase().includes(query.toLowerCase())
+                    );
+                    renderGalleryItems(filteredItems);
+                }
+                hideLoader();
+            });
+        }
+
+        function renderGalleryItems(items) {
+            const galleryGrid = document.getElementById('gallery-grid');
+            galleryGrid.innerHTML = '';
+
+            if (items.length === 0) {
+                galleryGrid.innerHTML = '<p class="text-center text-gray-500 p-4">No results found.</p>';
+                return;
+            }
+
+            galleryGrid.innerHTML = items.map(item => createGalleryItem(item)).join('');
+        }
+
+        function setupSearchFunctionality() {
+            const searchInputs = [
+                document.getElementById('search-input'),
+                document.getElementById('mobile-search-input')
+            ];
+
+            searchInputs.forEach(input => {
+                input.addEventListener('input', (e) => {
+                    const query = e.target.value.trim();
+                    if (query.length > 2) {
+                        searchGalleryItems(query);
+                    } else {
+                        fetchAndRenderGalleryItems();
+                    }
+                });
+            });
+        }
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        function setTheme(isDark) {
+            if (isDark) {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Check for saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+            setTheme(true);
+        } else {
+            setTheme(false);
+        }
+
+        themeToggle.addEventListener('click', () => {
+            setTheme(!html.classList.contains('dark'));
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Initialize the page
+        fetchAndRenderGalleryItems();
+        setupSearchFunctionality();
+
+        // Modal functionality
+        window.openModal = function(imageUrl) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = "flex";
+            modalImg.src = imageUrl;
+        }
+
+        const modal = document.getElementById('imageModal');
+        const span = document.getElementsByClassName("close")[0];
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+
+<!-- <script type="module" src="category.js"></script> -->
+</body>
+</html>

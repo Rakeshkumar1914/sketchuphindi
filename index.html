@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SketchUp Hindi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="./assets/images/logo.jpg" type="image/x-icon">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#0f172a',
+                            text: '#e2e8f0',
+                            nav: '#1f2937',
+                            content: '#1f2937',
+                        },
+                        light: {
+                            bg: '#f1f5f9',
+                            text: '#1f2937',
+                            nav: '#ffffff',
+                            content: '#ffffff',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .dark .text-shadow { text-shadow: 2px 2px 4px rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body class="min-h-screen dark:bg-dark-bg dark:text-dark-text bg-light-bg text-light-text transition-colors duration-300">
+    <nav class="dark:bg-dark-nav bg-light-nav shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0 flex items-center">
+                        <img src="assets/images/logo.jpg" alt="SketchUp Hindi Logo" class="h-8 w-8 mr-2">
+                        <span class="font-bold text-xl">SketchUp Hindi</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="/" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
+                    <a href="https://www.youtube.com/@SketchupHindi" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">YouTube Channel</a>
+                    <a href="/gallery.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Gallery</a>
+                    <a href="./about.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">About Us</a>
+                    <a href="./contact.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Contact</a>
+                </div>
+                <div class="flex items-center">
+                    <div class="relative hidden md:block">
+                        <input type="text" id="search-input" placeholder="Search..." class="w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <button id="themeToggle" class="ml-4 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <button id="mobile-menu-button" class="md:hidden ml-2 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="/" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
+                <a href="https://www.youtube.com/@SketchupHindi" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">YouTube Channel</a>
+                <a href="/gallery.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Gallery</a>
+                
+                <a href="/about.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">About Us</a>
+                <a href="/contact.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Contact</a>
+            </div>
+            <div class="px-2 pt-2 pb-3">
+                <input type="text" id="mobile-search-input" placeholder="Search..." class="w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="heroSection" class="py-20 pb-60 bg-gradient-to-r from-blue-500 to-teal-500 dark:from-blue-800 dark:to-teal-800">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+            <!-- Left Section -->
+            <div class="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-4 text-shadow">
+                    SketchUp Hindi
+                </h1>
+                <p class="text-xl md:text-2xl text-white mb-8">
+                    Your go-to channel for SketchUp tutorials in Hindi
+                </p>
+                <a href="https://www.youtube.com/@SketchupHindi" class="bg-white text-blue-500 hover:bg-blue-100 py-2 px-6 rounded-full text-lg font-semibold transition duration-300 ease-in-out transform hover:scale-105">
+                    Watch Now
+                </a>
+            </div>
+            <!-- Right Section -->
+            <div class="md:w-1/2 flex justify-center">
+                <img src="assets/images/logo.jpg" alt="SketchUp Hindi Logo" class="w-64 h-64 object-contain rounded-full border-4 border-white shadow-lg transform hover:rotate-3 transition duration-300 ease-in-out">
+            </div>
+        </div>
+    </section>
+
+    <!-- Videos Section -->
+    <section id="videos-section" class="py-16 dark:bg-dark-content bg-light-content">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8">Latest Videos</h2>
+            <div id="videos-container" class="space-y-12">
+                <!-- Video categories will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Results Section -->
+    <section id="search-results" class="py-16 dark:bg-dark-content bg-light-content hidden">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8">Search Results</h2>
+            <div id="search-results-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Search results will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- About Column -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">About SketchUp Hindi</h3>
+                    <p class="text-gray-400">We provide high-quality SketchUp tutorials in Hindi, helping you master 3D modeling and design.</p>
+                </div>
+
+                <!-- Quick Links Column -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="text-gray-400 hover:text-white transition-colors duration-300">Home</a></li>
+                        <li><a href="https://www.youtube.com/@SketchupHindi" class="text-gray-400 hover:text-white transition-colors duration-300">Youtube Channel</a></li>
+                        <li><a href="/about.html" class="text-gray-400 hover:text-white transition-colors duration-300">About Us</a></li>
+                        <li><a href="/contact.html" class="text-gray-400 hover:text-white transition-colors duration-300">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Column -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Contact Us</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-envelope mr-2"></i>hindisketchup@gmail.com</li>
+                        <li><i class="fas fa-phone mr-2"></i> +91 87000 88251</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i> Haryana, India</li>
+                    </ul>
+                </div>
+
+                <!-- Social Media Column -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://www.youtube.com/@SketchupHindi" class="text-gray-400 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-youtube fa-2x"></i>
+                        </a>
+                        <a href="https://www.facebook.com/sketchup.hindi/" class="text-gray-400 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-facebook fa-2x"></i>
+                        </a>
+                        <a href="https://www.instagram.com/sketchuphindi/?hl=en" class="text-gray-400 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-instagram fa-2x"></i>
+                        </a>
+                        <a href="https://chat.whatsapp.com/FC5tzsZWv5sIHEzl6D4sek" class="text-gray-400 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-whatsapp fa-2x"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
+                <p>&copy; 2024 SketchUp Hindi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loader -->
+    <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-75 dark:bg-opacity-75 hidden">
+        <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+
+    <script type="module" src="./script.js"></script>
+    <script>
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Set initial theme
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</body>
+</html>

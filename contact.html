@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - SketchUp Hindi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="./assets/images/logo.jpg" type="image/x-icon">
+
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#0f172a',
+                            text: '#e2e8f0',
+                            nav: '#1f2937',
+                            content: '#1f2937',
+                        },
+                        light: {
+                            bg: '#f1f5f9',
+                            text: '#1f2937',
+                            nav: '#ffffff',
+                            content: '#ffffff',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text transition-colors duration-300">
+    <nav class="bg-light-nav dark:bg-dark-nav shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0 flex items-center">
+                        <img src="assets/images/logo.jpg" alt="SketchUp Hindi Logo" class="h-8 w-8 mr-2">
+                        <span class="font-bold text-xl">SketchUp Hindi</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="/"
+                        class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
+                    <a href="https://www.youtube.com/@SketchupHindi" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">YouTubeChannel</a>
+                    <a href="/gallery.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Gallery</a>
+                    <a href="/about.html"
+                        class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">About
+                        Us</a>
+                    <a href="/contact.html"
+                        class="px-3 py-2 rounded-md text-sm font-medium bg-gray-200 dark:bg-gray-600">Contact</a>
+                </div>
+                <div class="flex items-center">
+                    <button id="themeToggle" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <button id="mobileMenuBtn"
+                        class="md:hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="md:hidden hidden px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="/"
+                class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
+            <a href="https://www.youtube.com/@SketchupHindi"
+                class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">YouTube
+                Channel</a>
+
+            <a href="/gallery.html"
+                class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Gallery</a>
+            <a href="/about.html"
+                class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">About
+                Us</a>
+            <a href="/contact.html"
+                class="block px-3 py-2 rounded-md text-base font-medium bg-gray-200 dark:bg-gray-600">Contact</a>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h1 class="text-3xl font-bold mb-8">Contact Us</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-light-content dark:bg-dark-content rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-4">Get in Touch</h2>
+                <form id="contactForm" class="space-y-4">
+                    <div>
+                        <label for="name" class="block text-sm font-medium mb-1">Name</label>
+                        <input type="text" id="name" name="name" required
+                            class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium mb-1">Email</label>
+                        <input type="email" id="email" name="email" required
+                            class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600">
+                    </div>
+                    <div>
+                        <label for="subject" class="block text-sm font-medium mb-1">Subject</label>
+                        <input type="text" id="subject" name="subject" required
+                            class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium mb-1">Message</label>
+                        <textarea id="message" name="message" rows="4" required
+                            class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"></textarea>
+                    </div>
+                    <button type="submit"
+                        class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-300">Send
+                        Message</button>
+                </form>
+            </div>
+
+            <div class="bg-light-content dark:bg-dark-content rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-4">Contact Information</h2>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-map-marker-alt text-blue-500 mt-1 mr-3"></i>
+                        <p>DD-1462,<br> DABUA COLONY GAZIPUR ROAD N I T FARIDABAD, <br> HARYANA-121001</p>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-phone text-blue-500 mr-3"></i>
+                        <p>+91 87000 88251</p>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-envelope text-blue-500 mr-3"></i>
+                        <p>hindisketchup@gmail.com</p>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <h3 class="text-xl font-semibold mb-2">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/sketchup.hindi/" class="text-blue-500 hover:text-blue-600"><i class="fab fa-facebook fa-2x"></i></a>
+    <link rel="shortcut icon" href="../assets/images/logo.jpg" type="image/x-icon">
+                        <a href="https://chat.whatsapp.com/FC5tzsZWv5sIHEzl6D4sek" class="text-blue-500 hover:text-blue-600"><i class="fab fa-whatsapp fa-2x"></i></a>
+                        <a href="https://www.instagram.com/sketchuphindi/?hl=en" class="text-blue-500 hover:text-blue-600"><i class="fab fa-instagram fa-2x"></i></a>
+                        <a href="https://www.youtube.com/@SketchupHindi" class="text-blue-500 hover:text-blue-600"><i class="fab fa-youtube fa-2x"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 bg-light-content dark:bg-dark-content rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold mb-4">Our Location</h2>
+            <iframe class="w-full h-96 rounded-lg" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2655.588958640311!2d77.26551797404485!3d28.379588495524814!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cdf5f3ffef35f%3A0x858a2377670b66f0!2sSketchUp%20Hindi!5e1!3m2!1sen!2sin!4v1726832778859!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+        </div>
+    </main>
+
+    <footer class="bg-light-nav dark:bg-dark-nav mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <img src="assets/images/logo.jpg" alt="SketchUp Hindi Logo" class="h-8 w-8 inline-block mr-2">
+                    <span class="font-bold text-xl">SketchUp Hindi</span>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="https://www.youtube.com/@SketchupHindi" class="text-gray-400 hover:text-gray-300"><i class="fab fa-youtube fa-2x"></i></a>
+                    <a href="https://www.facebook.com/sketchup.hindi/" class="text-gray-400 hover:text-gray-300"><i class="fab fa-facebook fa-2x"></i></a>
+                    <a href="https://www.instagram.com/sketchuphindi/?hl=en" class="text-gray-400 hover:text-gray-300"><i class="fab fa-instagram fa-2x"></i></a>
+                    <a href="https://chat.whatsapp.com/FC5tzsZWv5sIHEzl6D4sek" class="text-gray-400 hover:text-gray-300"><i class="fab fa-whatsapp fa-2x"></i></a>
+                </div>
+            </div>
+            <div class="mt-4 text-center text-gray-400">
+                <p>&copy; 2024 SketchUp Hindi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loader -->
+    <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-75 dark:bg-opacity-75 hidden">
+        <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+    apiKey: "AIzaSyCNVpQzPRLol49QdenJEjcAqRwyxIlQk8s",
+    authDomain: "hindi-f05ab.firebaseapp.com",
+    projectId: "hindi-f05ab",
+    storageBucket: "hindi-f05ab.appspot.com",
+    messagingSenderId: "796177404338",
+    appId: "1:796177404338:web:6349e9c010edc8bf2d54ab"
+  };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the database service
+        const database = firebase.database();
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        function setTheme(isDark) {
+            if (isDark) {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Check for saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+            setTheme(true);
+        } else {
+            setTheme(false);
+        }
+
+        themeToggle.addEventListener('click', () => {
+            setTheme(!html.classList.contains('dark'));
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!mobileMenu.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Loader functions
+        function showLoader() {
+            document.getElementById('loader').classList.remove('hidden');
+        }
+
+        function hideLoader() {
+            document.getElementById('loader').classList.add('hidden');
+        }
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            showLoader(); // Show loader before form submission
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+
+            // Get a key for a new contact message
+            const newContactKey = database.ref().child('contacts').push().key;
+
+            // Write the new contact's data simultaneously in the contacts list
+            const updates = {};
+            updates['/contacts/' + newContactKey] = {
+                name: name,
+                email: email,
+                subject: subject,
+                message: message,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            };
+
+            database.ref().update(updates)
+                .then(() => {
+                    hideLoader(); // Hide loader on successful submission
+                    alert('Thank you for your message. We will get back to you soon!');
+                    this.reset();
+                })
+                .catch((error) => {
+                    hideLoader(); // Hide loader on error
+                    console.error("Error writing contact to Firebase Database:", error);
+                    alert('There was an error sending your message. Please try again later.');
+                });
+        });
+    </script>
+</body>
+
+</html>
