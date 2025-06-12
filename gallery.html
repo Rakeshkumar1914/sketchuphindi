@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,13 +36,22 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
-        .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .dark .text-shadow { text-shadow: 2px 2px 4px rgba(255,255,255,0.1); }
+
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .dark .text-shadow {
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.1);
+        }
+
         .gallery-item {
             position: relative;
             overflow: hidden;
-            padding-bottom: 75%; /* 4:3 aspect ratio */
+            padding-bottom: 75%;
+            /* 4:3 aspect ratio */
         }
+
         .gallery-item-inner {
             position: absolute;
             top: 0;
@@ -53,11 +63,13 @@
             align-items: center;
             background-color: #f0f0f0;
         }
+
         .gallery-item img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
         }
+
         .gallery-item-info {
             position: absolute;
             bottom: 0;
@@ -69,9 +81,11 @@
             transform: translateY(100%);
             transition: transform 0.3s ease-in-out;
         }
+
         .gallery-item:hover .gallery-item-info {
             transform: translateY(0);
         }
+
         .modal {
             display: none;
             position: fixed;
@@ -81,8 +95,9 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.9);
+            background-color: rgba(0, 0, 0, 0.9);
         }
+
         .modal-content {
             margin: auto;
             display: flex;
@@ -91,6 +106,7 @@
             max-height: 80vh;
             object-fit: contain;
         }
+
         .close {
             position: absolute;
             top: 15px;
@@ -100,6 +116,7 @@
             font-weight: bold;
             transition: 0.3s;
         }
+
         .close:hover,
         .close:focus {
             color: #bbb;
@@ -108,7 +125,9 @@
         }
     </style>
 </head>
-<body class="min-h-screen dark:bg-dark-bg dark:text-dark-text bg-light-bg text-light-text transition-colors duration-300">
+
+<body
+    class="min-h-screen dark:bg-dark-bg dark:text-dark-text bg-light-bg text-light-text transition-colors duration-300">
     <nav class="dark:bg-dark-nav bg-light-nav shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -119,27 +138,42 @@
                     </a>
                 </div>
                 <div class="hidden md:flex items-center space-x-4">
-                    <a href="/" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
-                    <a href="https://www.youtube.com/@SketchupHindi" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">YouTube Channel</a>
-                    <a href="/gallery.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Gallery</a>
-                    <a href="/about.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">About Us</a>
-                    <a href="/contact.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Contact</a>
+                    <a href="/"
+                        class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
+                    <a href="https://www.youtube.com/@SketchupHindi"
+                        class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">YouTube
+                        Channel</a>
+                    <a href="/gallery.html"
+                        class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Gallery</a>
+                    <a href="/about.html"
+                        class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">About
+                        Us</a>
+                    <a href="/contact.html"
+                        class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Contact</a>
                 </div>
                 <div class="flex items-center">
                     <div class="relative hidden md:block">
-                        <input type="text" id="search-input" placeholder="Search..." class="w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        <input type="text" id="search-input" placeholder="Search..."
+                            class="w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </div>
                     <button id="themeToggle" class="ml-4 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                         </svg>
                     </button>
-                    <button id="mobile-menu-button" class="md:hidden ml-2 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    <button id="mobile-menu-button"
+                        class="md:hidden ml-2 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
                 </div>
@@ -148,14 +182,22 @@
         <!-- Mobile menu -->
         <div id="mobile-menu" class="md:hidden hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="/" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
-                <a href="https://www.youtube.com/@SketchupHindi" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">YouTube Channel</a>
-                <a href="/gallery.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Gallery</a>
-                <a href="/about.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">About Us</a>
-                <a href="/contact.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Contact</a>
+                <a href="/"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
+                <a href="https://www.youtube.com/@SketchupHindi"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">YouTube
+                    Channel</a>
+                <a href="/gallery.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Gallery</a>
+                <a href="/about.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">About
+                    Us</a>
+                <a href="/contact.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Contact</a>
             </div>
             <div class="px-2 pt-2 pb-3">
-                <input type="text" id="mobile-search-input" placeholder="Search..." class="w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="text" id="mobile-search-input" placeholder="Search..."
+                    class="w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
         </div>
     </nav>
@@ -168,7 +210,7 @@
     </header>
 
     <!-- Gallery Grid -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <main class="w-11/12 mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Gallery items will be dynamically inserted here -->
         </div>
@@ -180,23 +222,35 @@
             <div class="flex flex-wrap justify-between">
                 <div class="w-full md:w-1/3 mb-6 md:mb-0">
                     <h3 class="text-xl font-semibold mb-2">About SketchUp Hindi</h3>
-                    <p class="text-gray-400">We provide high-quality SketchUp tutorials in Hindi, helping you master 3D modeling and design.</p>
+                    <p class="text-gray-400">We provide high-quality SketchUp tutorials in Hindi, helping you master 3D
+                        modeling and design.</p>
                 </div>
                 <div class="w-full md:w-1/3 mb-6 md:mb-0">
                     <h3 class="text-xl font-semibold mb-2">Quick Links</h3>
                     <ul class="space-y-2">
-                        <li><a href="/" class="text-gray-400 hover:text-white transition-colors duration-300">Home</a></li>
-                        <li><a href="/about.html" class="text-gray-400 hover:text-white transition-colors duration-300">About Us</a></li>
-                        <li><a href="/contact.html" class="text-gray-400 hover:text-white transition-colors duration-300">Contact</a></li>
+                        <li><a href="/" class="text-gray-400 hover:text-white transition-colors duration-300">Home</a>
+                        </li>
+                        <li><a href="/about.html"
+                                class="text-gray-400 hover:text-white transition-colors duration-300">About Us</a></li>
+                        <li><a href="/contact.html"
+                                class="text-gray-400 hover:text-white transition-colors duration-300">Contact</a></li>
                     </ul>
                 </div>
                 <div class="w-full md:w-1/3">
                     <h3 class="text-xl font-semibold mb-2">Follow Us</h3>
                     <div class="flex space-x-4">
-                        <a href="https://www.youtube.com/@SketchupHindi" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fab fa-youtube fa-2x"></i></a>
-                        <a href="https://www.facebook.com/sketchup.hindi/" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fab fa-facebook fa-2x"></i></a>
-                        <a href="https://www.instagram.com/sketchuphindi/?hl=en" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fab fa-instagram fa-2x"></i></a>
-                        <a href="https://chat.whatsapp.com/FC5tzsZWv5sIHEzl6D4sek" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fab fa-whatsapp fa-2x"></i></a>
+                        <a href="https://www.youtube.com/@SketchupHindi"
+                            class="text-gray-400 hover:text-white transition-colors duration-300"><i
+                                class="fab fa-youtube fa-2x"></i></a>
+                        <a href="https://www.facebook.com/sketchup.hindi/"
+                            class="text-gray-400 hover:text-white transition-colors duration-300"><i
+                                class="fab fa-facebook fa-2x"></i></a>
+                        <a href="https://www.instagram.com/sketchuphindi/?hl=en"
+                            class="text-gray-400 hover:text-white transition-colors duration-300"><i
+                                class="fab fa-instagram fa-2x"></i></a>
+                        <a href="https://chat.whatsapp.com/FC5tzsZWv5sIHEzl6D4sek"
+                            class="text-gray-400 hover:text-white transition-colors duration-300"><i
+                                class="fab fa-whatsapp fa-2x"></i></a>
                     </div>
                 </div>
             </div>
@@ -207,7 +261,8 @@
     </footer>
 
     <!-- Loader -->
-    <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-75 dark:bg-opacity-75">
+    <div id="loader"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-75 dark:bg-opacity-75">
         <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
     </div>
 
@@ -224,13 +279,13 @@
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
-    apiKey: "AIzaSyCNVpQzPRLol49QdenJEjcAqRwyxIlQk8s",
-    authDomain: "hindi-f05ab.firebaseapp.com",
-    projectId: "hindi-f05ab",
-    storageBucket: "hindi-f05ab.appspot.com",
-    messagingSenderId: "796177404338",
-    appId: "1:796177404338:web:6349e9c010edc8bf2d54ab"
-  };
+            apiKey: "AIzaSyCNVpQzPRLol49QdenJEjcAqRwyxIlQk8s",
+            authDomain: "hindi-f05ab.firebaseapp.com",
+            projectId: "hindi-f05ab",
+            storageBucket: "hindi-f05ab.appspot.com",
+            messagingSenderId: "796177404338",
+            appId: "1:796177404338:web:6349e9c010edc8bf2d54ab"
+        };
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
@@ -257,21 +312,21 @@
                     <div class="h-48 overflow-hidden cursor-pointer" onclick="openModal('${image.url}')">
                         <img src="${image.url}" alt="${image.title}" class="w-full h-full object-cover">
                     </div>
-                    <div class="p-4">
-                        <h3 class="font-semibold text-lg mb-2 h-14 overflow-hidden">${truncateText(image.title, 50)}</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-300 mb-4 h-12 overflow-hidden">${truncateText(image.description, 75)}</p>
-                        <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                            <span><i class="far fa-calendar-alt mr-1"></i>${image.date}</span>
-                            <span><i class="far fa-clock mr-1"></i>${image.time}</span>
-                        </div>
-                        <span class="inline-block bg-blue-500 text-white text-xs px-2 py-1 rounded mt-2">${image.label}</span>
                     </div>
-                </div>
-            `;
-        }
-
-        // Fetch and render gallery items
-        function fetchAndRenderGalleryItems() {
+                    `;
+                }
+                // <div class="p-4">
+                //     <h3 class="font-semibold text-lg mb-2 h-14 overflow-hidden">${truncateText(image.title, 50)}</h3>
+                //     <p class="text-sm text-gray-600 dark:text-gray-300 mb-4 h-12 overflow-hidden">${truncateText(image.description, 75)}</p>
+                //     <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                //         </div>
+                //         <span class="inline-block bg-blue-500 text-white text-xs px-2 py-1 rounded mt-2">${image.label}</span>
+                //         </div>
+                
+                // <span><i class="far fa-calendar-alt mr-1"></i>${image.date}</span>
+                // <span><i class="far fa-clock mr-1"></i>${image.time}</span>
+                // Fetch and render gallery items
+                function fetchAndRenderGalleryItems() {
             showLoader();
             const galleryRef = ref(db, 'gallery');
             onValue(galleryRef, (snapshot) => {
@@ -292,7 +347,7 @@
             onValue(galleryRef, (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
-                    const filteredItems = Object.values(data).filter(item => 
+                    const filteredItems = Object.values(data).filter(item =>
                         item.title.toLowerCase().includes(query.toLowerCase()) ||
                         item.description.toLowerCase().includes(query.toLowerCase()) ||
                         item.label.toLowerCase().includes(query.toLowerCase())
@@ -350,7 +405,7 @@
         // Check for saved theme preference or use system preference
         const savedTheme = localStorage.getItem('theme');
         const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
+
         if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
             setTheme(true);
         } else {
@@ -374,7 +429,7 @@
         setupSearchFunctionality();
 
         // Modal functionality
-        window.openModal = function(imageUrl) {
+        window.openModal = function (imageUrl) {
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImage');
             modal.style.display = "flex";
@@ -384,11 +439,11 @@
         const modal = document.getElementById('imageModal');
         const span = document.getElementsByClassName("close")[0];
 
-        span.onclick = function() {
+        span.onclick = function () {
             modal.style.display = "none";
         }
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }
@@ -396,6 +451,7 @@
     </script>
 
 
-<!-- <script type="module" src="category.js"></script> -->
+    <!-- <script type="module" src="category.js"></script> -->
 </body>
+
 </html>

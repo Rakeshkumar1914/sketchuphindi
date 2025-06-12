@@ -37,18 +37,18 @@ function createVideoCard(video) {
                 <div class="h-48 overflow-hidden">
                     <img src="${video.thumbnail}" alt="${video.title}" class="w-full h-full object-cover">
                 </div>
-                <div class="p-4">
-                    <h3 class="font-semibold text-lg mb-2 h-14 overflow-hidden">${truncateText(video.title, 50)}</h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-4 h-12 overflow-hidden">${truncateText(video.description, 75)}</p>
-                    <div class="flex justify-between text-sm text-gray-500 dark:text-gray-400">
-                        <span><i class="far fa-calendar-alt mr-2"></i>${video.date}</span>
-                        <span><i class="far fa-clock mr-2"></i>${video.time}</span>
-                    </div>
-                </div>
-            </a>
-    `;
+                </a>
+                `;
     return card;
 }
+                // <div class="p-4">
+                //     <h3 class="font-semibold text-lg mb-2 h-14 overflow-hidden">${truncateText(video.title, 50)}</h3>
+                //     <p class="text-sm text-gray-600 dark:text-gray-300 mb-4 h-12 overflow-hidden">${truncateText(video.description, 75)}</p>
+                //     <div class="flex justify-between text-sm text-gray-500 dark:text-gray-400">
+                //         <span><i class="far fa-calendar-alt mr-2"></i>${video.date}</span>
+                //         <span><i class="far fa-clock mr-2"></i>${video.time}</span>
+                //     </div>
+                // </div>
 
 function truncateText(text, maxLength) {
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
