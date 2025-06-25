@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Image - SketchUp Hindi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../assets/images/logo.jpg" type="image/x-icon">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#0f172a',
+                            text: '#e2e8f0',
+                            nav: '#1f2937',
+                            content: '#1f2937',
+                        },
+                        light: {
+                            bg: '#f1f5f9',
+                            text: '#1f2937',
+                            nav: '#ffffff',
+                            content: '#ffffff',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 dark:bg-dark-bg text-gray-900 dark:text-dark-text transition-colors duration-300">
+    <nav class="bg-white dark:bg-dark-nav shadow-lg fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0 flex items-center">
+                        <img src="../assets/images/logo.jpg" alt="SketchUp Hindi Logo" class="h-8 w-8 mr-2">
+                        <span class="font-bold text-xl">SketchUp Hindi Admin</span>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="dashboard.html" class="hidden md:block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a>
+                    <button id="themeToggle" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <button id="mobileMenuBtn" class="md:hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="md:hidden hidden px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="dashboard.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a>
+        </div>
+    </nav>
+
+    <!-- Add a spacer to prevent content from being hidden behind the navbar -->
+    <div class="h-16"></div>
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">Update Image</h1>
+        
+        <!-- Image Update Form -->
+        <div class="bg-white dark:bg-dark-content rounded-lg shadow-md p-6 mb-8">
+            <form id="updateForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Image Source</label>
+                    <div class="flex items-center space-x-4">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="imageSource" value="url" checked class="form-radio">
+                            <span class="ml-2">URL</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="imageSource" value="file" class="form-radio">
+                            <span class="ml-2">File Upload</span>
+                        </label>
+                    </div>
+                </div>
+                <div id="urlInput">
+                    <label for="imageUrl" class="block text-sm font-medium mb-2">Image URL</label>
+                    <input type="url" id="imageUrl" class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <div id="fileInput" class="hidden">
+                    <label for="imageUpload" class="block text-sm font-medium mb-2">Select Image</label>
+                    <input type="file" id="imageUpload" accept="image/*" class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <div>
+                    <label for="imageTitle" class="block text-sm font-medium mb-2">Image Title</label>
+                    <input type="text" id="imageTitle" class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600" required>
+                </div>
+                <div>
+                    <label for="imageDescription" class="block text-sm font-medium mb-2">Image Description</label>
+                    <textarea id="imageDescription" rows="3" class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"></textarea>
+                </div>
+                <div>
+                    <label for="imageLabel" class="block text-sm font-medium mb-2">Image Label</label>
+                    <select id="imageLabel" class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600" required>
+                        <option value="bedroom">Bedroom</option>
+                        <option value="livingRoom">Living Room</option>
+                        <option value="kitchen">Kitchen</option>
+                        <option value="office">Office</option>
+                        <option value="wardrobe">Wardrobe</option>
+                        <option value="communitySpotlight">Community Spotlight</option>
+                    </select>
+                </div>
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-300">Update Image</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loader -->
+    <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-75 dark:bg-opacity-75 hidden">
+        <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+
+    
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
+        import { getDatabase, ref, update, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+        const firebaseConfig = {
+    apiKey: "AIzaSyCNVpQzPRLol49QdenJEjcAqRwyxIlQk8s",
+    authDomain: "hindi-f05ab.firebaseapp.com",
+    projectId: "hindi-f05ab",
+    storageBucket: "hindi-f05ab.appspot.com",
+    messagingSenderId: "796177404338",
+    appId: "1:796177404338:web:6349e9c010edc8bf2d54ab"
+  };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+        const storage = getStorage(app);
+
+        let imageId;
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+            } else {
+                loadImageData();
+            }
+        });
+
+        function showLoader() {
+            document.getElementById('loader').classList.remove('hidden');
+        }
+
+        function hideLoader() {
+            document.getElementById('loader').classList.add('hidden');
+        }
+
+        function loadImageData() {
+            showLoader();
+            const urlParams = new URLSearchParams(window.location.search);
+            imageId = urlParams.get('id');
+
+            if (!imageId) {
+                alert('No image ID provided');
+                window.location.href = 'imageUploaderToGallery.html';
+                return;
+            }
+
+            const imageRef = ref(db, `gallery/${imageId}`);
+            get(imageRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const imageData = snapshot.val();
+                    document.getElementById('imageUrl').value = imageData.url;
+                    document.getElementById('imageTitle').value = imageData.title;
+                    document.getElementById('imageDescription').value = imageData.description;
+                    document.getElementById('imageLabel').value = imageData.label;
+                } else {
+                    alert('Image not found');
+                    window.location.href = 'imageUploaderToGallery.html';
+                }
+            }).catch((error) => {
+                console.error('Error loading image data:', error);
+                alert('Error loading image data. Please try again.');
+            }).finally(() => {
+                hideLoader();
+            });
+        }
+
+        document.getElementById('updateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoader();
+
+            const title = document.getElementById('imageTitle').value;
+            const description = document.getElementById('imageDescription').value;
+            const label = document.getElementById('imageLabel').value;
+            const imageSource = document.querySelector('input[name="imageSource"]:checked').value;
+
+            let url = document.getElementById('imageUrl').value;
+
+            if (imageSource === 'file') {
+                const file = document.getElementById('imageUpload').files[0];
+                if (file) {
+                    const fileRef = storageRef(storage, `gallery/${Date.now()}_${file.name}`);
+                    await uploadBytes(fileRef, file);
+                    url = await getDownloadURL(fileRef);
+                }
+            }
+
+            const updatedImage = {
+                title,
+                description,
+                url,
+                label,
+                date: new Date().toISOString().split('T')[0],
+                time: new Date().toTimeString().split(' ')[0]
+            };
+
+            const updates = {};
+            updates[`/gallery/${imageId}`] = updatedImage;
+
+            update(ref(db), updates)
+                .then(() => {
+                    alert('Image updated successfully!');
+                    window.location.href = 'imageUploaderToGallery.html';
+                })
+                .catch((error) => {
+                    console.error('Error updating image:', error);
+                    alert('Error updating image. Please try again.');
+                })
+                .finally(() => {
+                    hideLoader();
+                });
+        });
+
+        // Toggle image source input
+        document.querySelectorAll('input[name="imageSource"]').forEach((radio) => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'url') {
+                    document.getElementById('urlInput').classList.remove('hidden');
+                    document.getElementById('fileInput').classList.add('hidden');
+                } else {
+                    document.getElementById('urlInput').classList.add('hidden');
+                    document.getElementById('fileInput').classList.remove('hidden');
+                }
+            });
+        });
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        function setTheme(isDark) {
+            if (isDark) {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Check for saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+            setTheme(true);
+        } else {
+            setTheme(false);
+        }
+
+        themeToggle.addEventListener('click', () => {
+            setTheme(!html.classList.contains('dark'));
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!mobileMenu.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

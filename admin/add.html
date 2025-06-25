@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Post - SketchUp Hindi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../assets/images/logo.jpg" type="image/x-icon">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#0f172a',
+                            text: '#e2e8f0',
+                            nav: '#1f2937',
+                            content: '#1f2937',
+                        },
+                        light: {
+                            bg: '#f1f5f9',
+                            text: '#1f2937',
+                            nav: '#ffffff',
+                            content: '#ffffff',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen dark:bg-dark-bg dark:text-dark-text bg-light-bg text-light-text transition-colors duration-300">
+    <nav class="dark:bg-dark-nav bg-light-nav shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0 flex items-center">
+                        <img src="../assets/images/logo.jpg" alt="SketchUp Hindi Logo" class="h-8 w-8 mr-2">
+                        <span class="font-bold text-xl">SketchUp Hindi</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="/admin/dashboard.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a>
+                    <a href="https://www.youtube.com/@SketchupHindi" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">YouTube Channel</a>
+                    <a href="/gallery.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Gallery</a>
+                    <a href="/about.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">About Us</a>
+                    <a href="/contact.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Contact</a>
+                </div>
+                <div class="flex items-center">
+                    <button id="themeToggle" class="ml-4 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <button id="mobile-menu-button" class="md:hidden ml-2 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="/admin/dashboard.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a>
+                <a href="https://www.youtube.com/@SketchupHindi" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">YouTube Channel</a>
+                <a href="/gallery.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Gallery</a>
+                <a href="/about.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">About Us</a>
+                <a href="/contact.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">Add New Post</h1>
+        <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-75 dark:bg-opacity-75 hidden">
+            <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+        <form id="addPostForm" class="bg-white dark:bg-dark-content p-6 rounded shadow-md">
+            <div class="mb-4">
+                <label for="title" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
+                <input type="text" id="title" class="w-full px-3 py-2 border rounded text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+            <div class="mb-4">
+                <label for="description" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                <textarea id="description" class="w-full px-3 py-2 border rounded text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="4" required></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="videoUrl" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">YouTube Video URL</label>
+                <input type="url" id="videoUrl" class="w-full px-3 py-2 border rounded text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+            <div class="mb-4">
+                <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Thumbnail</label>
+                <div class="flex items-center mb-2">
+                    <input type="radio" id="thumbnailUrl" name="thumbnailType" value="url" checked class="mr-2">
+                    <label for="thumbnailUrl" class="text-sm text-gray-700 dark:text-gray-300">URL</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="radio" id="thumbnailFile" name="thumbnailType" value="file" class="mr-2">
+                    <label for="thumbnailFile" class="text-sm text-gray-700 dark:text-gray-300">File Upload</label>
+                </div>
+            </div>
+            <div id="thumbnailUrlInput" class="mb-4">
+                <label for="thumbnail" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Thumbnail URL</label>
+                <input type="url" id="thumbnail" class="w-full px-3 py-2 border rounded text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div id="thumbnailFileInput" class="mb-4 hidden">
+                <label for="thumbnailUpload" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Upload Thumbnail</label>
+                <input type="file" id="thumbnailUpload" accept="image/*" class="w-full px-3 py-2 border rounded text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="mb-4">
+                <label for="label" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Label</label>
+                <select id="label" class="w-full px-3 py-2 border rounded text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <option value="zeroToHero">Zero To Hero</option>
+                    <option value="vray">Vray</option>
+                    <option value="2024">2024</option>
+                    <option value="autocadShorts">AutoCAD Shorts</option>
+                    <option value="sketchup-2023">SketchUp 2023</option>
+                    <option value="stair">Stair</option>
+                    <option value="autoCad">AutoCAD</option>
+                    <option value="sketchupLessons">SketchUp Lessons</option>
+                    <option value="civil">Civil</option>
+                    <option value="zeroTime">Zero Time</option>
+                    <option value="fastWork">Fast Work</option>
+                    <option value="1MinVideo">1 Min Video</option>
+                    <option value="skillBooster">Skill Booster</option>
+                    <option value="basicTool">Basic Tool</option>
+
+                    <!-- <option value="bedroom">Bedroom</option>
+                    <option value="livingRoom">Living Room</option>
+                    <option value="kitchen">Kitchen</option>
+                    <option value="office">Office</option>
+                    <option value="wardrobe">Wardrobe</option>
+                    <option value="communitySpotlight">Community Spotlight</option> -->
+                </select>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300">Add Post</button>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
+
+        const firebaseConfig = {
+    apiKey: "AIzaSyCNVpQzPRLol49QdenJEjcAqRwyxIlQk8s",
+    authDomain: "hindi-f05ab.firebaseapp.com",
+    projectId: "hindi-f05ab",
+    storageBucket: "hindi-f05ab.appspot.com",
+    messagingSenderId: "796177404338",
+    appId: "1:796177404338:web:6349e9c010edc8bf2d54ab"
+  };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+        const storage = getStorage(app);
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+            }
+        });
+
+        function showLoader() {
+            document.getElementById('loader').classList.remove('hidden');
+        }
+
+        function hideLoader() {
+            document.getElementById('loader').classList.add('hidden');
+        }
+
+        document.getElementById('addPostForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoader();
+
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const videoUrl = document.getElementById('videoUrl').value;
+            const label = document.getElementById('label').value;
+            const date = new Date().toISOString().split('T')[0];
+            const time = new Date().toTimeString().split(' ')[0];
+
+            let thumbnail = document.getElementById('thumbnail').value;
+            const thumbnailType = document.querySelector('input[name="thumbnailType"]:checked').value;
+
+            if (thumbnailType === 'file') {
+                const file = document.getElementById('thumbnailUpload').files[0];
+                if (file) {
+                    const fileRef = storageRef(storage, `thumbnails/${Date.now()}_${file.name}`);
+                    await uploadBytes(fileRef, file);
+                    thumbnail = await getDownloadURL(fileRef);
+                }
+            }
+
+            const newPost = {
+                title,
+                description,
+                videoUrl,
+                thumbnail,
+                label,
+                date,
+                time
+            };
+
+            push(ref(db, 'posts'), newPost)
+                .then(() => {
+                    alert('Post added successfully!');
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    alert('Error adding post: ' + error.message);
+                })
+                .finally(() => {
+                    hideLoader();
+                });
+        });
+
+        // Toggle thumbnail input based on selection
+        document.querySelectorAll('input[name="thumbnailType"]').forEach((radio) => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'url') {
+                    document.getElementById('thumbnailUrlInput').classList.remove('hidden');
+                    document.getElementById('thumbnailFileInput').classList.add('hidden');
+                } else {
+                    document.getElementById('thumbnailUrlInput').classList.add('hidden');
+                    document.getElementById('thumbnailFileInput').classList.remove('hidden');
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        function setTheme(isDark) {
+            if (isDark) {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Check for saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+            setTheme(true);
+        } else {
+            setTheme(false);
+        }
+
+        themeToggle.addEventListener('click', () => {
+            setTheme(!html.classList.contains('dark'));
+        });
+    </script>
+</body>
+</html>
