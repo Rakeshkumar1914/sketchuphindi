@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civil Engineering Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': {
+                                opacity: '0',
+                                transform: 'translateY(30px)'
+                            },
+                            '100%': {
+                                opacity: '1',
+                                transform: 'translateY(0)'
+                            }
+                        }
+                    },
+                    screens: {
+                        'xs': '475px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Enhanced responsive utilities */
+        @media (max-width: 640px) {
+            .calc-card {
+                font-size: 14px;
+            }
+            .calc-input {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+            /* Better mobile spacing */
+            .calc-card .flex-grow {
+                gap: 0.5rem;
+            }
+        }
+        
+        /* Better touch targets for mobile */
+        @media (hover: none) and (pointer: coarse) {
+            button {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            input {
+                min-height: 44px;
+            }
+        }
+
+        /* Improved mobile form layouts */
+        @media (max-width: 768px) {
+            .calc-card .flex-grow > div {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .calc-card label, .calc-card strong {
+                font-size: 0.875rem;
+                font-weight: 600;
+                color: #4a5568;
+            }
+            
+            /* Make buttons full width on mobile */
+            .calc-card button {
+                width: 100%;
+                margin: 0.25rem 0;
+            }
+            
+            /* Optimize input spacing */
+            .calc-card input {
+                width: 100%;
+                margin: 0.25rem 0;
+            }
+        }
+
+        /* Tablet optimizations */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .calc-card {
+                max-width: none;
+            }
+        }
+
+        /* Better scrolling on mobile */
+        @media (max-width: 640px) {
+            body {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        /* Ensure proper grid spacing on all devices */
+        .grid {
+            width: 100%;
+        }
+
+        /* Landscape phone adjustments */
+        @media (max-width: 896px) and (orientation: landscape) {
+            .calc-card {
+                min-height: 160px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-700 min-h-screen p-2 sm:p-4 md:p-5 text-gray-800">
+
+
+    <div class="max-w-7xl mx-auto p-2 sm:p-4 md:p-5">
+        <h1 class="text-white text-center mb-6 sm:mb-8 md:mb-10 text-2xl sm:text-3xl md:text-4xl font-bold drop-shadow-lg px-2">Civil Engineering Calculator</h1>
+
+        <!-- Search Bar -->
+        <div class="mb-6 sm:mb-8 flex justify-center">
+            <div class="relative w-full max-w-md">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Search calculators (e.g., brick, cement, area, volume)..." 
+                    class="w-full pl-10 pr-4 py-3 sm:py-4 border-2 border-white/30 rounded-xl bg-white/90 backdrop-blur-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:border-white focus:bg-white transition-all duration-300 text-sm sm:text-base"
+                    autocomplete="off"
+                >
+                <button 
+                    id="clearSearch" 
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200 hidden"
+                >
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Results Info -->
+        <div id="searchInfo" class="mb-4 text-center text-white/80 text-sm hidden">
+            <span id="searchResultsCount"></span>
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center py-12">
+            <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-8 mx-4">
+                <svg class="mx-auto h-12 w-12 text-white/60 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.034 0-3.9.785-5.291 2.291m0 0A7.962 7.962 0 014 12a8.008 8.008 0 018-8.001c1.969 0 3.84.721 5.291 2.291"></path>
+                </svg>
+                <h3 class="text-xl font-semibold text-white mb-2">No calculators found</h3>
+                <p class="text-white/70">Try searching for terms like "brick", "cement", "area", "volume", or "conversion"</p>
+                <button onclick="clearSearchFunction()" class="mt-4 bg-white/20 hover:bg-white/30 text-white px-6 py-2 rounded-lg transition-all duration-300">
+                    Show All Calculators
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-3 sm:gap-4 md:gap-6" id="calculatorGrid">
+
+    <!-- Brick Calculator -->
+    <div data-search-terms="brick wall area construction building masonry" data-category="construction" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-3 sm:mb-4 md:mb-5 text-lg sm:text-xl font-semibold border-b-2 border-gray-200 pb-2 sm:pb-3">Brick Calculator</h2>
+        <div class="flex-grow">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0">
+                <label class="text-sm sm:text-base">Wall Area (m²):</label>
+                <input type="number" id="brickWallArea" class="w-full sm:w-32 md:w-36 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="calcBricks()" class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 sm:px-5 py-2 sm:py-3 m-1 sm:m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+            </div>
+        </div>
+        <div class="mt-auto font-semibold mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="brickResult"></div>
+    </div>
+
+    <!-- Cement Calculator -->
+    <div data-search-terms="cement concrete mix ratio volume bags construction" data-category="construction" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-3 sm:mb-4 md:mb-5 text-lg sm:text-xl font-semibold border-b-2 border-gray-200 pb-2 sm:pb-3">Cement Volume Calculator (for 1:2:4 Mix)</h2>
+        <div class="flex-grow">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0">
+                <label class="text-sm sm:text-base">Total Volume (m³):</label>
+                <input type="number" id="cementVolume" class="calc-input w-full sm:w-32 md:w-36 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="calcCement()" class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 sm:px-5 py-2 sm:py-3 m-1 sm:m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+            </div>
+        </div>
+        <div class="mt-auto font-semibold mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="cementResult"></div>
+    </div>
+        <!-- <button onclick="calcCement()">Calculate</button>
+        <div class="result" id="cementResult"></div> -->
+    </div>
+
+    <!-- Steel Calculator -->
+    <div data-search-terms="steel weight reinforcement rebar diameter length construction" data-category="construction" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-3 sm:mb-4 md:mb-5 text-lg sm:text-xl font-semibold border-b-2 border-gray-200 pb-2 sm:pb-3">Steel Weight Calculator</h2>
+        <div class="flex-grow">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0">
+                <label class="text-sm sm:text-base">Diameter (mm):</label>
+                <input type="number" id="steelDia" class="calc-input w-full sm:w-20 md:w-24 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <label class="text-sm sm:text-base">Length (m):</label>
+                <input type="number" id="steelLength" class="calc-input w-full sm:w-20 md:w-24 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="calcSteel()" class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 sm:px-5 py-2 sm:py-3 m-1 sm:m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+            </div>
+        </div>
+        <div class="mt-auto font-semibold mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="steelResult"></div>
+    </div>
+
+    <!-- Concrete Volume Calculator -->
+    <div data-search-terms="concrete volume length width thickness construction" data-category="construction" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-3 sm:mb-4 md:mb-5 text-lg sm:text-xl font-semibold border-b-2 border-gray-200 pb-2 sm:pb-3">Concrete Volume Calculator</h2>
+        <div class="flex-grow">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0">
+                <label class="text-sm sm:text-base">Length (m):</label>
+                <input type="number" id="concLength" class="calc-input w-full sm:w-16 md:w-20 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <label class="text-sm sm:text-base">Width (m):</label>
+                <input type="number" id="concWidth" class="calc-input w-full sm:w-16 md:w-20 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <label class="text-sm sm:text-base">Thickness (m):</label>
+                <input type="number" id="concHeight" class="calc-input w-full sm:w-16 md:w-20 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="calcConcrete()" class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 sm:px-5 py-2 sm:py-3 m-1 sm:m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+            </div>
+        </div>
+        <div class="mt-auto font-semibold mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="concreteResult"></div>
+    </div>
+
+    <!-- Paint Calculator -->
+    <div data-search-terms="paint area coverage liters coating walls" data-category="construction" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-3 sm:mb-4 md:mb-5 text-lg sm:text-xl font-semibold border-b-2 border-gray-200 pb-2 sm:pb-3">Paint Calculator</h2>
+        <div class="flex-grow">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0">
+                <label class="text-sm sm:text-base">Area to Paint (m²):</label>
+                <input type="number" id="paintArea" class="calc-input w-full sm:w-20 md:w-24 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <label class="text-sm sm:text-base">Coverage/Liter (m²):</label>
+                <input type="number" id="paintCoverage" value="10" class="calc-input w-full sm:w-20 md:w-24 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="calcPaint()" class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 sm:px-5 py-2 sm:py-3 m-1 sm:m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+            </div>
+        </div>
+        <div class="mt-auto font-semibold mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="paintResult"></div>
+    </div>
+
+    <!-- Area of Rectangle -->
+    <div data-search-terms="rectangle area length width geometry calculation" data-category="geometry" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-3 sm:mb-4 md:mb-5 text-lg sm:text-xl font-semibold border-b-2 border-gray-200 pb-2 sm:pb-3">Area of Rectangle</h2>
+        <div class="flex-grow">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0">
+                <label class="text-sm sm:text-base">Length:</label>
+                <input type="number" id="rectLength" placeholder="m" class="calc-input w-full sm:w-32 md:w-36 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <label class="text-sm sm:text-base">Width:</label>
+                <input type="number" id="rectWidth" placeholder="m" class="calc-input w-full sm:w-32 md:w-36 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="calcRectangleArea()" class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 sm:px-5 py-2 sm:py-3 m-1 sm:m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+            </div>
+        </div>
+        <div class="mt-auto font-semibold mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="rectResult"></div>
+    </div>
+
+    <!-- Area of Triangle -->
+    <div data-search-terms="triangle area base height geometry calculation" data-category="geometry" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-3 sm:mb-4 md:mb-5 text-lg sm:text-xl font-semibold border-b-2 border-gray-200 pb-2 sm:pb-3">Area of Triangle</h2>
+        <div class="flex-grow">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0">
+                <label class="text-sm sm:text-base">Base:</label>
+                <input type="number" id="triBase" placeholder="m" class="calc-input w-full sm:w-32 md:w-36 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <label class="text-sm sm:text-base">Height:</label>
+                <input type="number" id="triHeight" placeholder="m" class="calc-input w-full sm:w-32 md:w-36 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="calcTriangleArea()" class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 sm:px-5 py-2 sm:py-3 m-1 sm:m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+            </div>
+        </div>
+        <div class="mt-auto font-semibold mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="triResult"></div>
+    </div>
+
+    <!-- Volume of Cube -->
+    <div data-search-terms="cube volume side geometry calculation" data-category="geometry" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-3 sm:mb-4 md:mb-5 text-lg sm:text-xl font-semibold border-b-2 border-gray-200 pb-2 sm:pb-3">Volume of Cube</h2>
+        <div class="flex-grow">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0">
+                <label class="text-sm sm:text-base">Side:</label>
+                <input type="number" id="cubeSide" placeholder="m" class="calc-input w-full sm:w-32 md:w-36 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="calcCubeVolume()" class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 sm:px-5 py-2 sm:py-3 m-1 sm:m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+            </div>
+        </div>
+        <div class="mt-auto font-semibold mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="cubeResult"></div>
+    </div>
+
+    <!-- Volume of Cylinder -->
+    <div data-search-terms="cylinder volume radius height geometry calculation" data-category="geometry" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-3 sm:mb-4 md:mb-5 text-lg sm:text-xl font-semibold border-b-2 border-gray-200 pb-2 sm:pb-3">Volume of Cylinder</h2>
+        <div class="flex-grow">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0">
+                <label class="text-sm sm:text-base">Radius:</label>
+                <input type="number" id="cylRadius" placeholder="m" class="calc-input w-full sm:w-32 md:w-36 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <label class="text-sm sm:text-base">Height:</label>
+                <input type="number" id="cylHeight" placeholder="m" class="calc-input w-full sm:w-32 md:w-36 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="calcCylinderVolume()" class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 sm:px-5 py-2 sm:py-3 m-1 sm:m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+            </div>
+        </div>
+        <div class="mt-auto font-semibold mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="cylResult"></div>
+    </div>
+
+    <!-- Unit Conversion -->
+    <div data-search-terms="unit conversion meters feet length measurement" data-category="conversion" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-3 sm:mb-4 md:mb-5 text-lg sm:text-xl font-semibold border-b-2 border-gray-200 pb-2 sm:pb-3">Unit Conversion - Meters to Feet</h2>
+        <div class="flex-grow">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0">
+                <label class="text-sm sm:text-base">Meters:</label>
+                <input type="number" id="meterInput" placeholder="m" class="calc-input w-full sm:w-32 md:w-36 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="convertToFeet()" class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 sm:px-5 py-2 sm:py-3 m-1 sm:m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Convert</button>
+            </div>
+        </div>
+        <div class="mt-auto font-semibold mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="feetResult"></div>
+    </div>
+
+    <script>
+        function calcRectangleArea() {
+            let length = parseFloat(document.getElementById('rectLength').value);
+            let width = parseFloat(document.getElementById('rectWidth').value);
+            let area = length * width;
+            document.getElementById('rectResult').innerText = "Area = " + area + " m²";
+        }
+
+        function calcTriangleArea() {
+            let base = parseFloat(document.getElementById('triBase').value);
+            let height = parseFloat(document.getElementById('triHeight').value);
+            let area = 0.5 * base * height;
+            document.getElementById('triResult').innerText = "Area = " + area + " m²";
+        }
+
+        function calcCubeVolume() {
+            let side = parseFloat(document.getElementById('cubeSide').value);
+            let volume = side ** 3;
+            document.getElementById('cubeResult').innerText = "Volume = " + volume + " m³";
+        }
+
+        function calcCylinderVolume() {
+            let radius = parseFloat(document.getElementById('cylRadius').value);
+            let height = parseFloat(document.getElementById('cylHeight').value);
+            let volume = Math.PI * radius * radius * height;
+            document.getElementById('cylResult').innerText = "Volume = " + volume.toFixed(2) + " m³";
+        }
+
+        function convertToFeet() {
+            let meters = parseFloat(document.getElementById('meterInput').value);
+            let feet = meters * 3.28084;
+            document.getElementById('feetResult').innerText = meters + " meters = " + feet.toFixed(2) + " feet";
+        }
+
+        function calcBricks() {
+            let area = parseFloat(document.getElementById('brickWallArea').value);
+            let bricks = area * 60; // average 60 bricks per m²
+            document.getElementById('brickResult').innerText = "Required Bricks ≈ " + Math.round(bricks);
+        }
+
+        function calcCement() {
+            let totalVol = parseFloat(document.getElementById('cementVolume').value);
+            let dryVol = totalVol * 1.54; // dry volume
+            let cementPart = 1 / (1 + 2 + 4);
+            let cementVolume = dryVol * cementPart;
+            let bags = cementVolume / 0.035;
+            document.getElementById('cementResult').innerText = "Cement Bags ≈ " + Math.ceil(bags);
+        }
+
+        function calcSteel() {
+            let dia = parseFloat(document.getElementById('steelDia').value);
+            let length = parseFloat(document.getElementById('steelLength').value);
+            let weight = (dia * dia * length * 0.00617).toFixed(2);
+            document.getElementById('steelResult').innerText = "Weight ≈ " + weight + " kg";
+        }
+
+        function calcConcrete() {
+            let l = parseFloat(document.getElementById('concLength').value);
+            let w = parseFloat(document.getElementById('concWidth').value);
+            let h = parseFloat(document.getElementById('concHeight').value);
+            let volume = (l * w * h).toFixed(2);
+            document.getElementById('concreteResult').innerText = "Concrete Volume = " + volume + " m³";
+        }
+
+        function calcPaint() {
+            let area = parseFloat(document.getElementById('paintArea').value);
+            let coverage = parseFloat(document.getElementById('paintCoverage').value);
+            let liters = (area / coverage).toFixed(2);
+            document.getElementById('paintResult').innerText = "Paint Required ≈ " + liters + " liters";
+        }
+        // Additional Functions for new calculators
+        function calcSquareArea() {
+            let side = parseFloat(document.getElementById('squareSide').value);
+            let area = side * side;
+            document.getElementById('squareResult').innerText = "Area = " + area.toFixed(2) + " m²";
+        }
+
+        function calcRectangleArea2() {
+            let length = parseFloat(document.getElementById('rectLength2').value);
+            let width = parseFloat(document.getElementById('rectWidth2').value);
+            let area = length * width;
+            document.getElementById('rectResult2').innerText = "Area = " + area.toFixed(2) + " m²";
+        }
+
+        function calcCubeVolume2() {
+            let side = parseFloat(document.getElementById('cubeSide2').value);
+            let volume = Math.pow(side, 3);
+            document.getElementById('cubeResult2').innerText = "Volume = " + volume.toFixed(2) + " m³";
+        }
+
+        function calcCuboidVolume() {
+            let length = parseFloat(document.getElementById('cuboidLength').value);
+            let width = parseFloat(document.getElementById('cuboidWidth').value);
+            let height = parseFloat(document.getElementById('cuboidHeight').value);
+            let volume = length * width * height;
+            document.getElementById('cuboidResult').innerText = "Volume = " + volume.toFixed(2) + " m³";
+        }
+
+        function calcCylinderVolume2() {
+            let radius = parseFloat(document.getElementById('cylRadius2').value);
+            let height = parseFloat(document.getElementById('cylHeight2').value);
+            let volume = Math.PI * radius * radius * height;
+            document.getElementById('cylResult2').innerText = "Volume = " + volume.toFixed(2) + " m³";
+        }
+
+        // Unit Conversion Functions
+        function metersToFeet() {
+            let val = parseFloat(document.getElementById('meterVal').value);
+            let res = val * 3.28084;
+            document.getElementById('meterFeetResult').innerText = val + " m = " + res.toFixed(2) + " ft";
+        }
+
+        function feetToMeters() {
+            let val = parseFloat(document.getElementById('feetVal').value);
+            let res = val / 3.28084;
+            document.getElementById('meterFeetResult').innerText = val + " ft = " + res.toFixed(2) + " m";
+        }
+
+        function sqmToSqft() {
+            let val = parseFloat(document.getElementById('sqmVal').value);
+            let res = val * 10.7639;
+            document.getElementById('areaConversionResult').innerText = val + " m² = " + res.toFixed(2) + " ft²";
+        }
+
+        function sqftToSqm() {
+            let val = parseFloat(document.getElementById('sqftVal').value);
+            let res = val / 10.7639;
+            document.getElementById('areaConversionResult').innerText = val + " ft² = " + res.toFixed(2) + " m²";
+        }
+
+        function cubicmToCubicft() {
+            let val = parseFloat(document.getElementById('cubicmVal').value);
+            let res = val * 35.3147;
+            document.getElementById('volConversionResult').innerText = val + " m³ = " + res.toFixed(2) + " ft³";
+        }
+
+        function cubicftToCubicm() {
+            let val = parseFloat(document.getElementById('cubicftVal').value);
+            let res = val / 35.3147;
+            document.getElementById('volConversionResult').innerText = val + " ft³ = " + res.toFixed(2) + " m³";
+        }
+
+        // Volume Calculations
+        function calcSphereVolume() {
+            let r = parseFloat(document.getElementById('sphereRadius').value);
+            let v = (4 / 3) * Math.PI * Math.pow(r, 3);
+            document.getElementById('sphereResult').innerText = "Volume = " + v.toFixed(2) + " m³";
+        }
+
+        function calcConeVolume() {
+            let r = parseFloat(document.getElementById('coneRadius').value);
+            let h = parseFloat(document.getElementById('coneHeight').value);
+            let v = (1 / 3) * Math.PI * Math.pow(r, 2) * h;
+            document.getElementById('coneResult').innerText = "Volume = " + v.toFixed(2) + " m³";
+        }
+
+        function calcPyramidVolume() {
+            let base = parseFloat(document.getElementById('pyramidBase').value);
+            let h = parseFloat(document.getElementById('pyramidHeight').value);
+            let v = (1 / 3) * base * h;
+            document.getElementById('pyramidResult').innerText = "Volume = " + v.toFixed(2) + " m³";
+        }
+
+        // Temperature Conversion
+        function celsiusToFahrenheit() {
+            let c = parseFloat(document.getElementById('celsiusVal').value);
+            let f = (c * 9/5) + 32;
+            document.getElementById('tempResult').innerText = c + " °C = " + f.toFixed(2) + " °F";
+        }
+
+        function fahrenheitToCelsius() {
+            let f = parseFloat(document.getElementById('fahrenheitVal').value);
+            let c = (f - 32) * 5/9;
+            document.getElementById('tempResult').innerText = f + " °F = " + c.toFixed(2) + " °C";
+        }
+
+        // Length Conversions
+        function meterToOther() {
+            let m = parseFloat(document.getElementById('lengthMeter').value);
+            let cm = m * 100;
+            let inch = m * 39.3701;
+            let ft = m * 3.28084;
+            document.getElementById('meterToOtherResult').innerText =
+                `${m} m = ${cm.toFixed(2)} cm, ${inch.toFixed(2)} in, ${ft.toFixed(2)} ft`;
+        }
+
+        function cmToOther() {
+            let cm = parseFloat(document.getElementById('lengthCm').value);
+            let m = cm / 100;
+            let dm = cm / 10;
+            let inch = cm / 2.54;
+            let ft = inch / 12;
+            document.getElementById('cmToOtherResult').innerText =
+                `${cm} cm = ${m.toFixed(2)} m, ${dm.toFixed(2)} dm, ${inch.toFixed(2)} in, ${ft.toFixed(2)} ft`;
+        }
+
+        function inchToOther() {
+            let inch = parseFloat(document.getElementById('lengthInch').value);
+            let cm = inch * 2.54;
+            let dm = cm / 10;
+            let m = cm / 100;
+            let ft = inch / 12;
+            document.getElementById('inchToOtherResult').innerText =
+                `${inch} in = ${cm.toFixed(2)} cm, ${dm.toFixed(2)} dm, ${m.toFixed(2)} m, ${ft.toFixed(2)} ft`;
+        }
+
+        function feetToOther() {
+            let ft = parseFloat(document.getElementById('lengthFeet').value);
+            let inch = ft * 12;
+            let cm = inch * 2.54;
+            let dm = cm / 10;
+            let m = cm / 100;
+            document.getElementById('feetToOtherResult').innerText =
+                `${ft} ft = ${inch.toFixed(2)} in, ${cm.toFixed(2)} cm, ${dm.toFixed(2)} dm, ${m.toFixed(2)} m`;
+        }
+
+        // Make all calculator cards responsive
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update all calculator cards to be responsive
+            const cards = document.querySelectorAll('[class*="bg-white"][class*="p-6"]');
+            cards.forEach(card => {
+                // Update card classes
+                card.className = card.className.replace(
+                    /bg-white p-6 mb-6 rounded-2xl shadow-2xl backdrop-blur-lg border border-white\/20 transition-all duration-300 ease-out min-h-\[200px\] flex flex-col hover:-translate-y-2 hover:shadow-3xl animate-fade-in-up/g,
+                    'calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up'
+                );
+
+                // Update h2 elements
+                const h2 = card.querySelector('h2');
+                if (h2) {
+                    h2.className = 'text-gray-600 mb-3 sm:mb-4 md:mb-5 text-lg sm:text-xl font-semibold border-b-2 border-gray-200 pb-2 sm:pb-3';
+                }
+
+                // Update input elements
+                const inputs = card.querySelectorAll('input[type="number"]');
+                inputs.forEach(input => {
+                    input.className = 'calc-input w-full sm:w-32 md:w-36 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white';
+                });
+
+                // Update button elements
+                const buttons = card.querySelectorAll('button');
+                buttons.forEach(button => {
+                    button.className = 'w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 sm:px-5 py-2 sm:py-3 m-1 sm:m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md';
+                });
+
+                // Update result elements
+                const results = card.querySelectorAll('[class*="result"], [id*="Result"]');
+                results.forEach(result => {
+                    result.className = 'mt-auto font-semibold mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm';
+                });
+            });
+
+            // Make forms more mobile-friendly
+            const flexGrowDivs = document.querySelectorAll('.flex-grow');
+            flexGrowDivs.forEach(div => {
+                if (!div.querySelector('.flex-col')) {
+                    div.classList.add('space-y-2');
+                    
+                    // Wrap input groups in responsive containers
+                    const labels = div.querySelectorAll('strong, label');
+                    const textNodes = Array.from(div.childNodes).filter(node => 
+                        node.nodeType === Node.TEXT_NODE && node.textContent.trim()
+                    );
+                    
+                    // Group related elements
+                    const inputs = div.querySelectorAll('input');
+                    const buttons = div.querySelectorAll('button');
+                    
+                    if (inputs.length > 1) {
+                        div.classList.add('space-y-3');
+                    }
+                }
+            });
+
+            // Initialize search functionality
+            initializeSearch();
+        });
+
+        // Search Functionality
+        function initializeSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const clearButton = document.getElementById('clearSearch');
+            const searchInfo = document.getElementById('searchInfo');
+            const searchResultsCount = document.getElementById('searchResultsCount');
+            const noResults = document.getElementById('noResults');
+            const calculatorGrid = document.getElementById('calculatorGrid');
+            const allCards = document.querySelectorAll('[data-search-terms]');
+
+            // Show/hide clear button based on input
+            searchInput.addEventListener('input', function() {
+                if (this.value.length > 0) {
+                    clearButton.classList.remove('hidden');
+                    performSearch(this.value.toLowerCase());
+                } else {
+                    clearButton.classList.add('hidden');
+                    showAllCalculators();
+                }
+            });
+
+            // Clear search function
+            clearButton.addEventListener('click', function() {
+                searchInput.value = '';
+                clearButton.classList.add('hidden');
+                showAllCalculators();
+                searchInput.focus();
+            });
+
+            // Perform search
+            function performSearch(query) {
+                let visibleCount = 0;
+                
+                allCards.forEach(card => {
+                    const searchTerms = card.dataset.searchTerms.toLowerCase();
+                    const title = card.querySelector('h2').textContent.toLowerCase();
+                    
+                    if (searchTerms.includes(query) || title.includes(query)) {
+                        card.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Update search info and results
+                if (visibleCount === 0) {
+                    searchInfo.classList.add('hidden');
+                    noResults.classList.remove('hidden');
+                    calculatorGrid.style.display = 'none';
+                } else {
+                    searchInfo.classList.remove('hidden');
+                    noResults.classList.add('hidden');
+                    calculatorGrid.style.display = 'grid';
+                    
+                    const resultText = visibleCount === 1 ? 
+                        `Found 1 calculator` : 
+                        `Found ${visibleCount} calculators`;
+                    searchResultsCount.textContent = resultText;
+                }
+            }
+
+            // Show all calculators
+            function showAllCalculators() {
+                allCards.forEach(card => {
+                    card.style.display = 'flex';
+                });
+                searchInfo.classList.add('hidden');
+                noResults.classList.add('hidden');
+                calculatorGrid.style.display = 'grid';
+            }
+
+            // Make clear search function globally available
+            window.clearSearchFunction = function() {
+                searchInput.value = '';
+                clearButton.classList.add('hidden');
+                showAllCalculators();
+            };
+
+            // Enable search on Enter key
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performSearch(this.value.toLowerCase());
+                }
+            });
+        }
+    </script>
+
+    <div data-search-terms="unit conversions meters feet square cubic area volume temperature measurement" data-category="conversion" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-3 sm:mb-4 md:mb-5 text-lg sm:text-xl font-semibold border-b-2 border-gray-200 pb-2 sm:pb-3">Unit Conversions</h2>
+        <div class="mb-4">
+            <strong class="text-gray-600 font-semibold text-base block mb-2">Meters ↔ Feet</strong><br>
+            Meters: <input type="number" id="meterVal" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="metersToFeet()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">To Feet</button>
+            Feet: <input type="number" id="feetVal" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="feetToMeters()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">To Meters</button>
+            <div class="font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="meterFeetResult"></div>
+        </div>
+        <div class="mb-4">
+            <strong class="text-gray-600 font-semibold text-base block mb-2">Square Meters ↔ Square Feet</strong><br>
+            Sq Meters: <input type="number" id="sqmVal" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="sqmToSqft()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">To Sq Feet</button>
+            Sq Feet: <input type="number" id="sqftVal" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="sqftToSqm()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">To Sq Meters</button>
+            <div class="font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="areaConversionResult"></div>
+        </div>
+        <div class="mb-4">
+            <strong class="text-gray-600 font-semibold text-base block mb-2">Cubic Meters ↔ Cubic Feet</strong><br>
+            Cubic Meters: <input type="number" id="cubicmVal" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="cubicmToCubicft()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">To Cubic Feet</button>
+            Cubic Feet: <input type="number" id="cubicftVal" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="cubicftToCubicm()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">To Cubic Meters</button>
+            <div class="font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="volConversionResult"></div>
+        </div>
+    </div>
+
+    <!-- Volume of Sphere -->
+    <div data-search-terms="sphere volume radius geometry calculation" data-category="geometry" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-3 sm:mb-4 md:mb-5 text-lg sm:text-xl font-semibold border-b-2 border-gray-200 pb-2 sm:pb-3">Volume of Sphere</h2>
+        <div class="flex-grow">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0">
+                <label class="text-sm sm:text-base">Radius (m):</label>
+                <input type="number" id="sphereRadius" class="calc-input w-full sm:w-32 md:w-36 p-2 sm:p-3 m-1 sm:m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-2 sm:focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="calcSphereVolume()" class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 sm:px-5 py-2 sm:py-3 m-1 sm:m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+            </div>
+        </div>
+        <div class="mt-auto font-semibold mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="sphereResult"></div>
+    </div>
+
+    <!-- Volume of Cone -->
+    <div data-search-terms="cone volume radius height geometry calculation" data-category="geometry" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-5 text-xl font-semibold border-b-2 border-gray-200 pb-3">Volume of Cone</h2>
+        <div class="flex-grow">
+            Radius (m): <input type="number" id="coneRadius" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            Height (m): <input type="number" id="coneHeight" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="calcConeVolume()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+        </div>
+        <div class="mt-auto font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="coneResult"></div>
+    </div>
+
+    <!-- Volume of Pyramid -->
+    <div data-search-terms="pyramid volume base area height geometry calculation" data-category="geometry" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-5 text-xl font-semibold border-b-2 border-gray-200 pb-3">Volume of Pyramid</h2>
+        <div class="flex-grow">
+            Base Area (m²): <input type="number" id="pyramidBase" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            Height (m): <input type="number" id="pyramidHeight" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="calcPyramidVolume()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+        </div>
+        <div class="mt-auto font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="pyramidResult"></div>
+    </div>
+
+    <!-- Square Area Calculator -->
+    <div data-search-terms="square area side geometry calculation" data-category="geometry" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-5 text-xl font-semibold border-b-2 border-gray-200 pb-3">Area of Square</h2>
+        <div class="flex-grow">
+            Side (m): <input type="number" id="squareSide" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="calcSquareArea()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+        </div>
+        <div class="mt-auto font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="squareResult"></div>
+    </div>
+
+    <!-- Rectangle Area Calculator (Additional) -->
+    <div data-search-terms="rectangle area length width geometry calculation extended" data-category="geometry" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-5 text-xl font-semibold border-b-2 border-gray-200 pb-3">Area of Rectangle (Extended)</h2>
+        <div class="flex-grow">
+            Length (m): <input type="number" id="rectLength2" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            Width (m): <input type="number" id="rectWidth2" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="calcRectangleArea2()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+        </div>
+        <div class="mt-auto font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="rectResult2"></div>
+    </div>
+
+    <!-- Cube Volume Calculator (Additional) -->
+    <div data-search-terms="cube volume side geometry calculation extended" data-category="geometry" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-5 text-xl font-semibold border-b-2 border-gray-200 pb-3">Volume of Cube (Extended)</h2>
+        <div class="flex-grow">
+            Side (m): <input type="number" id="cubeSide2" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="calcCubeVolume2()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+        </div>
+        <div class="mt-auto font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="cubeResult2"></div>
+    </div>
+
+    <!-- Cuboid Volume Calculator -->
+    <div data-search-terms="cuboid volume length width height geometry calculation" data-category="geometry" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-5 text-xl font-semibold border-b-2 border-gray-200 pb-3">Volume of Cuboid</h2>
+        <div class="flex-grow">
+            Length (m): <input type="number" id="cuboidLength" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            Width (m): <input type="number" id="cuboidWidth" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            Height (m): <input type="number" id="cuboidHeight" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="calcCuboidVolume()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+        </div>
+        <div class="mt-auto font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="cuboidResult"></div>
+    </div>
+
+    <!-- Cylinder Volume Calculator (Additional) -->
+    <div data-search-terms="cylinder volume radius height geometry calculation extended" data-category="geometry" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-5 text-xl font-semibold border-b-2 border-gray-200 pb-3">Volume of Cylinder (Extended)</h2>
+        <div class="flex-grow">
+            Radius (m): <input type="number" id="cylRadius2" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            Height (m): <input type="number" id="cylHeight2" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="calcCylinderVolume2()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Calculate</button>
+        </div>
+        <div class="mt-auto font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="cylResult2"></div>
+    </div>
+
+    <!-- Extended Unit Conversions -->
+    <div data-search-terms="extended unit conversions temperature celsius fahrenheit length meters centimeters inches feet measurement" data-category="conversion" class="calc-card bg-white p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl backdrop-blur-lg border border-white/20 transition-all duration-300 ease-out min-h-[180px] sm:min-h-[200px] flex flex-col hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl sm:hover:shadow-3xl animate-fade-in-up">
+        <h2 class="text-gray-600 mb-5 text-xl font-semibold border-b-2 border-gray-200 pb-3">More Unit Conversions</h2>
+
+        <!-- Temperature -->
+        <div class="mb-4">
+            <strong class="text-gray-600 font-semibold text-base block mb-2">Temperature</strong><br>
+            Celsius: <input type="number" id="celsiusVal" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="celsiusToFahrenheit()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">To °F</button>
+            Fahrenheit: <input type="number" id="fahrenheitVal" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+            <button onclick="fahrenheitToCelsius()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">To °C</button>
+            <div class="font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="tempResult"></div>
+        </div>
+
+        <!-- Meters ↔ Centimeters ↔ Inches ↔ Feet -->
+        <div class="mt-5">
+            <strong class="text-gray-600 font-semibold text-base block mb-2">Length Conversions</strong><br>
+            <div class="mb-3">
+                Meters: <input type="number" id="lengthMeter" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="meterToOther()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Convert</button><br>
+                <div class="font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="meterToOtherResult"></div>
+            </div>
+
+            <div class="mb-3">
+                Centimeters: <input type="number" id="lengthCm" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="cmToOther()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Convert</button><br>
+                <div class="font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="cmToOtherResult"></div>
+            </div>
+
+            <div class="mb-3">
+                Inches: <input type="number" id="lengthInch" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="inchToOther()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Convert</button><br>
+                <div class="font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="inchToOtherResult"></div>
+            </div>
+
+            <div class="mb-3">
+                Feet: <input type="number" id="lengthFeet" class="w-36 p-3 m-2 border-2 border-gray-200 rounded-lg text-sm font-medium transition-all duration-300 bg-gray-50 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 focus:bg-white">
+                <button onclick="feetToOther()" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-5 py-3 m-2 border-none rounded-lg cursor-pointer text-sm font-semibold transition-all duration-300 shadow-lg shadow-indigo-500/40 hover:from-indigo-600 hover:to-purple-700 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/60 active:translate-y-0 active:shadow-md">Convert</button><br>
+                <div class="font-semibold mt-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-indigo-500 text-gray-700 min-h-[20px] text-sm" id="feetToOtherResult"></div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+
+</body>
+</html>
