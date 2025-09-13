@@ -32,10 +32,7 @@ function createVideoCard(video) {
                 <div class="p-4">
                     <h3 class="font-semibold text-lg mb-2 h-14 overflow-hidden">${truncateText(video.title, 50)}</h3>
                     <p class="text-sm text-gray-600 dark:text-gray-300 mb-4 h-12 overflow-hidden">${truncateText(video.description, 75)}</p>
-                    <div class="flex justify-between text-sm text-gray-500 dark:text-gray-400">
-                        <span><i class="far fa-calendar-alt mr-2"></i>${video.date}</span>
-                        <span><i class="far fa-clock mr-2"></i>${video.time}</span>
-                    </div>
+                    
                 </div>
             </a>
         </div>
@@ -66,7 +63,7 @@ function renderSection(sectionId, sectionTitle, videos) {
 function fetchAndRenderSections() {
     showLoader();
     // const sections = ['bedroom', 'livingRoom', 'kitchen', 'office', 'wardrobe', 'communitySpotlight'];
-    const sections = ['zeroToHero','vray', '2024', 'autocadShorts', 'sketchup-2023', 'stair', 'autoCad','sketchupLessons', 'civil', 'zeroTime', 'fastWork', '1MinVideo', 'skillBooster', 'basicTool'];
+    const sections = ['zeroToHero','vray', '2024', '2025', 'animation', 'live', 'autocadShorts', 'sketchup-2023', 'stair', 'autoCad','sketchupLessons', 'civil', 'zeroTime', 'fastWork', '1MinVideo', 'skillBooster', 'basicTool'];
     const videosContainer = document.getElementById('videos-container');
     let completedSections = 0;
 
